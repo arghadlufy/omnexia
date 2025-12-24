@@ -3,15 +3,24 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Logo } from "@/components/logo";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Menu01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import {
+  RegisterLink,
+  LoginLink,
+  LogoutLink,
+} from "@kinde-oss/kinde-auth-nextjs/components";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 export function HeroSection() {
+  const { getUser, isLoading } = useKindeBrowserClient();
+  const user = getUser();
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -95,14 +104,38 @@ export function HeroSection() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex items-center gap-4"
             >
-              <div className="hidden sm:flex items-center gap-3">
-                <Button variant="ghost" asChild>
-                  <Link href="/login">Login</Link>
-                </Button>
-                <Button asChild>
-                  <Link href="/signup">Sign Up</Link>
-                </Button>
-              </div>
+              {isLoading ? null : (
+                <div className="hidden sm:flex items-center gap-3">
+                  {user ? (
+                    <>
+                      <Link
+                        className={buttonVariants({ size: "sm" })}
+                        href="/workspace"
+                      >
+                        <span>Dashboard</span>
+                      </Link>
+
+                      <LogoutLink
+                        className={buttonVariants({
+                          size: "sm",
+                          variant: "outline",
+                        })}
+                      >
+                        <span>Logout</span>
+                      </LogoutLink>
+                    </>
+                  ) : (
+                    <>
+                      <Button variant="ghost" asChild>
+                        <LoginLink>Login</LoginLink>
+                      </Button>
+                      <Button asChild>
+                        <RegisterLink>Sign Up</RegisterLink>
+                      </Button>
+                    </>
+                  )}
+                </div>
+              )}
               <ThemeToggle />
 
               {/* Mobile Menu Button */}
@@ -145,28 +178,51 @@ export function HeroSection() {
                   {item.label}
                 </Link>
               ))}
-              <div className="pt-2 space-y-2 border-t border-border">
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start"
-                  asChild
-                >
-                  <Link
-                    href="/login"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Login
-                  </Link>
-                </Button>
-                <Button className="w-full justify-start" asChild>
-                  <Link
-                    href="/signup"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Sign Up
-                  </Link>
-                </Button>
-              </div>
+              {isLoading ? null : (
+                <div className="pt-2 space-y-2 border-t border-border">
+                  {user ? (
+                    <div className="flex flex-col gap-2">
+                      <Link
+                        className={buttonVariants({ size: "sm" })}
+                        href="/workspace"
+                      >
+                        <span>Dashboard</span>
+                      </Link>
+                      <LogoutLink
+                        className={buttonVariants({
+                          size: "sm",
+                          variant: "outline",
+                        })}
+                      >
+                        <span>Logout</span>
+                      </LogoutLink>
+                    </div>
+                  ) : (
+                    <>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start"
+                        asChild
+                      >
+                        <LoginLink
+                        // href="/login"
+                        // onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          Login
+                        </LoginLink>
+                      </Button>
+                      <Button className="w-full justify-start" asChild>
+                        <RegisterLink
+                        // href="/signup"
+                        // onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          Sign Up
+                        </RegisterLink>
+                      </Button>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </motion.div>
         </motion.nav>

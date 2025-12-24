@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Nunito_Sans, Chivo_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AuthProvider } from "@/components/auth-provider";
 
 const nunitoSans = Nunito_Sans({
   variable: "--font-overpass-sans",
@@ -80,19 +81,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${nunitoSans.variable} ${chivoMono.variable} antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+    <AuthProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${nunitoSans.variable} ${chivoMono.variable} antialiased`}
         >
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </AuthProvider>
   );
 }
