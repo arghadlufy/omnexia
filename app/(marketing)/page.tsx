@@ -1,10 +1,10 @@
-import { DownloadsAndTrustedStatsSection } from "@/components/download-trust-section";
-import { FAQSection } from "@/components/faq-section";
-import { FeaturesSection } from "@/components/features-section";
-import { FooterSection } from "@/components/footer-section";
-import { HeroSection } from "@/components/hero-section";
-import { PricingSection } from "@/components/pricing-section";
-import { TestimonialsSection } from "@/components/testimonials-section";
+import { DownloadsAndTrustedStatsSection } from "@/app/(marketing)/_components/download-trust-section";
+import { FAQSection } from "@/app/(marketing)/_components/faq-section";
+import { FeaturesSection } from "@/app/(marketing)/_components/features-section";
+import { FooterSection } from "@/app/(marketing)/_components/footer-section";
+import { HeroSection } from "@/app/(marketing)/_components/hero-section";
+import { PricingSection } from "@/app/(marketing)/_components/pricing-section";
+import { TestimonialsSection } from "@/app/(marketing)/_components/testimonials-section";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
